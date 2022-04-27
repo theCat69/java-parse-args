@@ -1,18 +1,12 @@
 package com.wha.parseargs;
 
 import com.wha.parseargs.argument.Argument;
-import com.wha.parseargs.argument.Flag;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * TODO add strict
- *
- * @param <T>
- */
 @RequiredArgsConstructor
 public class ArgParser<T> {
 

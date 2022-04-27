@@ -1,7 +1,6 @@
 package com.wha.parseargs;
 
 import com.wha.parseargs.argument.*;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -22,7 +21,6 @@ class ArgParserTest {
     )));
 
     @Test
-    @SneakyThrows
     void logginAndPortTest() {
         String commandLine = "-l -p 9090";
 
@@ -35,7 +33,6 @@ class ArgParserTest {
     }
 
     @Test
-    @SneakyThrows
     void booleanLast() {
         String commandLine = "-d /c/kafka -p 9090 -l";
 
@@ -48,7 +45,6 @@ class ArgParserTest {
     }
 
     @Test
-    @SneakyThrows
     void emptyArgs() {
         String commandLine = "";
 
@@ -61,7 +57,6 @@ class ArgParserTest {
     }
 
     @Test
-    @SneakyThrows
     void negativePort() {
         String commandLine = "-p -7909";
 
@@ -72,7 +67,6 @@ class ArgParserTest {
     }
 
     @Test
-    @SneakyThrows
     void uknownParametersAreIgnored() {
         String commandLine = "-p -7909 -x -q okdza iiid -77 -F";
 
@@ -85,7 +79,6 @@ class ArgParserTest {
     }
 
     @Test
-    @SneakyThrows
     void nullDefaultValues() {
         ArgParser<ExampleDto> argParser = new ArgParser<>(new Schema<>(
                 List.of(
@@ -106,17 +99,16 @@ class ArgParserTest {
     }
 
     @Test
-    @SneakyThrows
     void unhandledTypeExample() {
         ArgParser<ExampleDto> argParser = new ArgParser<>(new Schema<>(
-               List.of(
-                       new Argument<>(
-                               new Flag("d"),
-                               1,
-                               Path.of("."),
-                               ExampleDto::setPathDirectory,
-                               (exampleDto, s) -> exampleDto.setPathDirectory(Path.of(s)))
-               )
+                List.of(
+                        new Argument<>(
+                                new Flag("d"),
+                                1,
+                                Path.of("."),
+                                ExampleDto::setPathDirectory,
+                                (exampleDto, s) -> exampleDto.setPathDirectory(Path.of(s)))
+                )
         ));
 
         String commandLine = "-d /c/kafka";
@@ -128,7 +120,6 @@ class ArgParserTest {
     }
 
     @Test
-    @SneakyThrows
     void unhandledTypeExampleDefaultValue() {
         ArgParser<ExampleDto> argParser = new ArgParser<>(new Schema<>(
                 List.of(
@@ -147,6 +138,22 @@ class ArgParserTest {
 
         assertThat(exampleDto).isNotNull()
                 .returns(Path.of("."), ExampleDto::getPathDirectory);
+    }
+
+    @Test
+    void aliasFlag() {
+        ArgParser<ExampleDto> argParser = new ArgParser<>(new Schema<>(
+                List.of(
+                        new StringArgument<>(new Flag("d", "directory"), null, ExampleDto::setDirectory)
+                )
+        ));
+
+        String commandLine = "--directory /c/kafka";
+
+        ExampleDto exampleDto = argParser.parseArgs(commandLine.split(" "), new ExampleDto());
+
+        assertThat(exampleDto).isNotNull()
+                .returns("/c/kafka", ExampleDto::getDirectory);
     }
 
 }

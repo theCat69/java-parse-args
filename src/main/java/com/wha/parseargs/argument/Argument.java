@@ -15,9 +15,7 @@ public class Argument<T, U> {
     private final BiConsumer<U, T> setter;
     private final BiConsumer<U, String> setValueToTarget;
 
-    //TODO try catch execption
     public void setDefaultValueToTarget(U target) {
         this.setter.accept(target, defaultValue);
     }
-
 }

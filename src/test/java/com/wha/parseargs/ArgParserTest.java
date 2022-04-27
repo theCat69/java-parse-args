@@ -82,9 +82,9 @@ class ArgParserTest {
     void nullDefaultValues() {
         ArgParser<ExampleDto> argParser = new ArgParser<>(new Schema<>(
                 List.of(
-                        new BooleanArgument<>(new Flag("l"), null, ExampleDto::setLogging),
-                        new StringArgument<>(new Flag("d"), null, ExampleDto::setDirectory),
-                        new IntegerArgument<>(new Flag("p"), null, ExampleDto::setPort)
+                        new BooleanArgument<>(new Flag("l"), ExampleDto::setLogging),
+                        new StringArgument<>(new Flag("d"), ExampleDto::setDirectory),
+                        new IntegerArgument<>(new Flag("p"), ExampleDto::setPort)
                 )
         ));
 
@@ -144,7 +144,7 @@ class ArgParserTest {
     void aliasFlag() {
         ArgParser<ExampleDto> argParser = new ArgParser<>(new Schema<>(
                 List.of(
-                        new StringArgument<>(new Flag("d", "directory"), null, ExampleDto::setDirectory)
+                        new StringArgument<>(new Flag("d", "directory"), ExampleDto::setDirectory)
                 )
         ));
 

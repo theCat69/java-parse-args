@@ -1,10 +1,11 @@
 pipeline {
   agent any
   stages {
-    withMaven {
-      stage('Build') {
-        steps {
-          sh 'mvn -B -DskipTests clean package'
+    stage('Build') {
+      steps {
+        echo 'Hello from my build'
+        withMaven {
+          sh "mvn -B -DskipTests clean package"
         }
       }
     }
